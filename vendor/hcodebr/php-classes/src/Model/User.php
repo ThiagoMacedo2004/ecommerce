@@ -29,6 +29,24 @@ class User extends Model {
 
     }
 
+    public static function checkLoginExist($desemail)
+    {
+
+        $sql = new Sql();
+
+        $results =  $sql->select("SELECT * FROM tb_users WHERE deslogin = :deslogin", [
+            ':deslogin'=>$desemail
+        ]);
+
+        if (count($results) == 0){
+
+            return false;
+
+        }else{
+            return true;
+        }
+    }
+
     public static function checkLogin($inadmin = true)
     {
 
@@ -122,7 +140,7 @@ class User extends Model {
         $sql = new Sql();
 
         $results =  $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :indamin)", array(
-            ":desperson"=>$this->getdesperson(),
+            ":desperson"=> utf8_decode($this->getdesperson()),
             ":deslogin"=>$this->getdeslogin(),
             ":despassword"=>$this->getdespassword(),
             ":desemail"=>$this->getdesemail(),
@@ -242,6 +260,30 @@ class User extends Model {
             }
 
         }
+    }
+
+    public static function setErrorRegister($msg)
+    {
+
+        $_SESSION[User::ERROR_REGISTER] = $msg;
+
+    }
+
+    public static function getErrorRegister()
+    {
+
+        $msg = (isset($_SESSION[User::ERROR_REGISTER]) && $_SESSION[User::ERROR_REGISTER]) ? $_SESSION[User::ERROR_REGISTER] : '';
+        user::clearErrorRegister();
+
+        return $msg;
+
+    }
+
+    public static function clearErrorRegister()
+    {
+
+        $_SESSION[User::ERROR_REGISTER] = NULL;
+
     }
 
        
