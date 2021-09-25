@@ -215,20 +215,43 @@ $app->get('/checkout', function(){
 });
 
 
+$app->get('/forgot', function(){
+
+	$page = new Page();
+
+	$page->setTpl("forgot");
+});
+
+$app->post('/forgot', function(){
+
+	$user = User::getForgot($_POST["email"], false);
+
+	header("Location: /forgot/sent");
+	exit;
+
+});
+
+$app->get('/forgot/sent', function(){
+
+	$page = new Page();
+
+	$page->setTpl("forgot-sent");
+
+});
+
+$app->get('/forgot/reset', function(){
+
+	$user = User::getForgot($_GET["code"]);
+
+	$page = new Page();
+
+	$page->setTpl("forgot-reset");
+
+});
 
 
 
 
-// $app->get('/categories/:idcategory', function($idcategory){
 
-// 	$category = new Category();	
 
-// 	$category->get((int)$idcategory);
-
-// 	$page = new Page();
-
-// 	$page->setTpl('category', [
-// 		'category'=>$category->getValues(),
-// 		'products'=>Product::checkList($category->getProducts())
-// 	]);
 
