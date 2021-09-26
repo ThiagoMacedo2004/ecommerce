@@ -10,6 +10,7 @@ use \Hcode\Model\User;
 class Cart extends Model {
 
     const SESSION = "Cart";
+    const SESSION_ERROR = "CartError";
 
     public static function getFromSession()
     {
@@ -85,6 +86,13 @@ class Cart extends Model {
             $this->setData($results[0]);
 
         }
+
+    }
+
+    public static function setMsgError($msg)
+    {
+
+        $_SESSION[Cart::SESSION_ERROR] = $msg;
 
     }
 

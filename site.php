@@ -1,5 +1,7 @@
 <?php
 
+use Hcode\Model\Addres;
+use Hcode\Model\Address;
 use Hcode\Model\Cart;
 use Hcode\Model\Category;
 use Hcode\Model\Product;
@@ -208,9 +210,49 @@ $app->post('/register', function(){
 
 $app->get('/checkout', function(){
 
+	User::verifyLogin(false);
+
+	$address = new Address();
+	
+	$cart = Cart::getFromSession();
+	
+	if(isset($_GET['zipcode'])){
+		
+		$address->loadFromCEP($_GET['zipcode']);
+
+		$cart->setdeszipcode($_GET['zipcode']);
+
+		$cart->save();
+
+		
+	}
+
 	$page = new Page();
 
-	$page->setTpl('checkout');
+	$page->setTpl('checkout', [
+		'cart'=>$cart->getValues(),
+		'address'=>$address->getValues(),
+		'products'=>$cart->getProducts()
+	]);
+
+});
+
+$app->post('/checkout', function(){
+
+	User::verifyLogin(false);
+
+	$user = User::getFromSession();
+
+	$address = new Address();
+
+	$_POST['deszipcode'] = $_POST['zipcode'];
+	$_POST['idperson'] = 1;
+
+	$address->setData($_POST);
+
+	$address->save();
+
+	header('Location: /order');
 
 });
 
@@ -250,7 +292,21 @@ $app->get('/forgot/reset', function(){
 });
 
 
+$app-> get('/profile', function(){
 
+	User::verifyLogin(false);
+
+	$user = User::getFromSession();
+
+	$page = new Page();
+
+	$page->setTpl('profile',[
+		'user'=>$user->getValues(),
+		'profileMsg'=>'',
+		'profileError'=>''
+	]);
+
+});
 
 
 

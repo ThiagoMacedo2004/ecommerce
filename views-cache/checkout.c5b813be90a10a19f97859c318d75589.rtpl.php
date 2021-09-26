@@ -21,11 +21,11 @@
 						<div id="customer_details" class="col2-set">
 							<div class="row">
 								<div class="col-md-12">
-
+									
 									<div class="alert alert-danger">
-										Error!
+									Erro
 									</div>
-
+								
 									<div class="woocommerce-billing-fields">
 										<h3>Endereço de entrega</h3>
 										<p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
@@ -71,21 +71,23 @@
 													</tr>
 												</thead>
 												<tbody>
-                                                    
+                                                    <?php $counter1=-1;  if( isset($products) && ( is_array($products) || $products instanceof Traversable ) && sizeof($products) ) foreach( $products as $key1 => $value1 ){ $counter1++; ?>
+
 													<tr class="cart_item">
 														<td class="product-name">
-															Ship Your Idea <strong class="product-quantity">× 1</strong> 
+															<?php echo htmlspecialchars( $value1["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?> <strong class="product-quantity">× <?php echo htmlspecialchars( $value1["nrqtd"], ENT_COMPAT, 'UTF-8', FALSE ); ?></strong> 
 														</td>
 														<td class="product-total">
-															<span class="amount">$700.00</span>
+															<span class="amount">R$<?php echo formatPrice($value1["vltotal"]); ?></span>
 														</td>
                                                     </tr>
-                                                    
+                                                    <?php } ?>
+
 												</tbody>
 												<tfoot>
 													<tr class="cart-subtotal">
 														<th>Subtotal</th>
-														<td><span class="amount">$700.00</span>
+														<td><span class="amount">R$1.000</span>
 														</td>
 													</tr>
 													<tr class="shipping">
