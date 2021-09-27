@@ -24,10 +24,7 @@ $app->get('/admin/users', function(){
 	
 
 	}
-
-	// $users = User::listAll();
-
-
+	
 	$pages = [];
 
 	for($x = 0; $x < $pagination['pages']; $x++)
